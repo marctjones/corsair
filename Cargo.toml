@@ -1,0 +1,41 @@
+[workspace]
+# Empty workspace - isolated from Servo to avoid Arti/Stylo trait recursion
+
+[package]
+name = "corsair"
+version = "0.1.0"
+edition = "2021"
+authors = ["The Servo Project Developers"]
+license = "MPL-2.0"
+description = "Embedded Tor proxy daemon for Servo browser using Arti over Unix Domain Sockets"
+repository = "https://github.com/marctjones/corsair"
+
+[[bin]]
+name = "corsair"
+path = "src/main.rs"
+
+[dependencies]
+# Arti - Embedded Tor implementation (ISOLATED FROM STYLO!)
+arti-client = { version = "0.36.0", default-features = false, features = ["tokio", "onion-service-client", "rustls"] }
+tor-rtcompat = { version = "0.36.0", default-features = false, features = ["tokio", "rustls"] }
+
+# Async runtime
+tokio = { version = "1", features = ["full"] }
+tokio-util = { version = "0.7", features = ["codec", "io"] }
+
+# Logging
+log = "0.4"
+env_logger = "0.11"
+
+# Error handling
+anyhow = "1.0"
+thiserror = "1.0"
+
+# Serialization for IPC protocol
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+bincode = "1.3"
+
+# Networking
+futures = "0.3"
+bytes = "1.0"
